@@ -141,10 +141,11 @@ interface AnswerCountBoxProps {
 }
 
 const AnswerCountBox = ({ question }: AnswerCountBoxProps) => {
+  const answerCount = question?.answerCount || 0;
   return (
     <S.AnswerCountContainer>
       <S.AnswerCountBox>
-        댓글&nbsp;&nbsp;<span>{question?.answerCount}</span>
+        댓글&nbsp;&nbsp;<span>{answerCount}</span>
       </S.AnswerCountBox>
     </S.AnswerCountContainer>
   );
