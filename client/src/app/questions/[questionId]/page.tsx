@@ -60,6 +60,7 @@ const QuestionDetailPage = () => {
         },
       });
       setQuestionAndAnswer(response.data);
+      console.log(response.data.answerCount);
       console.log(response.data.answers);
       setPageInfo(response.data.pageInfo);
       dispatch(setAnswerList(response.data.answers));
@@ -141,17 +142,17 @@ interface AnswerCountBoxProps {
 }
 
 const AnswerCountBox = ({ question }: AnswerCountBoxProps) => {
-  const [commentCount, setCommentCount] = useState(question?.answerCount || 0);
+  // const [commentCount, setCommentCount] = useState(question?.answerCount || 0);
 
-  useEffect(() => {
-    console.log('AnswerCountBox useEffect triggered');
-    setCommentCount(question?.answerCount || 0);
-  }, [question]);
+  // useEffect(() => {
+  //   console.log('AnswerCountBox useEffect triggered');
+  //   setCommentCount(question?.answerCount || 0);
+  // }, [question]);
 
   return (
     <S.AnswerCountContainer>
       <S.AnswerCountBox>
-        댓글&nbsp;&nbsp;<span>{question?.answerCount}</span>
+        댓글&nbsp;&nbsp;<span>{question?.answers.length}</span>
       </S.AnswerCountBox>
     </S.AnswerCountContainer>
   );
@@ -196,7 +197,7 @@ const BoxTop = ({ isAuthor, question }: BoxTopProps) => {
         },
       });
     }
-    console.log('질문이 삭제되었습니다.');
+    alert('질문이 삭제되었습니다.');
     router.push('/questions');
   };
 
