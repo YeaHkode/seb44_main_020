@@ -116,7 +116,7 @@ const AnswerBoxTop = ({ onEditClick, answer, question }: AnswerBoxTopProps) => {
   const { questionId } = useParams();
   const userId = useSelector((state: RootState) => state.auth.memberId);
   const [isAuthor, setIsAuthor] = useState<boolean>(false);
-
+  // 댓글 삭제
   const handleDeleteAnswer = async () => {
     dispatch(deleteAnswerList(answer));
     const source = `${process.env.NEXT_PUBLIC_API_URL}/questions/${questionId}/answers/${answerId}`;
@@ -126,7 +126,7 @@ const AnswerBoxTop = ({ onEditClick, answer, question }: AnswerBoxTopProps) => {
         Authorization: localStorage.getItem('Authorization'),
       },
     });
-    console.log('답변이 삭제되었습니다.');
+    alert('답변이 삭제되었습니다.');
   };
 
   useEffect(() => {
