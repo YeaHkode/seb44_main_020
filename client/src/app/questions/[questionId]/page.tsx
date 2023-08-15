@@ -66,7 +66,7 @@ const QuestionDetailPage = () => {
     };
 
     getQuestionDetailData();
-  }, [questionId, page]);
+  }, [questionAndAnswer, questionId, page]);
 
   const onSubmit = async ({
     selectedMovie,
