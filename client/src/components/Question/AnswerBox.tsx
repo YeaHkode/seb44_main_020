@@ -6,15 +6,17 @@ import {
   AnswerType,
   deleteAnswerList,
   editAnswerList,
+  setAnswerList,
 } from '@/redux/features/answerListSlice';
 import { RootState } from '@/redux/store';
 import axios from 'axios';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SearchMovieList } from './Modal';
 import SearchBox from './SearchBox';
+import { QuestionListResponse } from '@/app/questions/page';
 
 interface AnswerBoxProps {
   answer: AnswerType;
@@ -116,17 +118,52 @@ const AnswerBoxTop = ({ onEditClick, answer, question }: AnswerBoxTopProps) => {
   const { questionId } = useParams();
   const userId = useSelector((state: RootState) => state.auth.memberId);
   const [isAuthor, setIsAuthor] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page') ?? 1;
+  const [pageInfo, setPageInfo] = useState<QuestionListResponse['pageInfo']>({
+    page: 1,
+    size: 0,
+    totalElements: 0,
+    totalPages: 0,
+  });
   // 댓글 삭제
-  const handleDeleteAnswer = async () => {
-    dispatch(deleteAnswerList(answer));
-    const source = `${process.env.NEXT_PUBLIC_API_URL}/questions/${questionId}/answers/${answerId}`;
-    await axios.delete(source, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('Authorization'),
-      },
-    });
-    alert('답변이 삭제되었습니다.');
+  // const handleDeleteAnswer = async () => {
+  //   dispatch(deleteAnswerList(answer));
+  //   const source = `${process.env.NEXT_PUBLIC_API_URL}/questions/${questionId}/answers/${answerId}`;
+  //   await axios.delete(source, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: localStorage.getItem('Authorization'),
+  //     },
+  //   });
+  //   alert('답변이 삭제되었습니다.');
+  // };
+
+  const onDeleteAnswer = async (answerId: any) => {
+    if (window.confirm('댓글을 삭제하시겠습니까?')) {
+      const source = `${process.env.NEXT_PUBLIC_API_URL}/questions/${questionId}/answers/${answerId}`;
+      await axios.delete(source, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('Authorization'),
+        },
+      });
+
+      // 서버에서 댓글 삭제 후에 서버에서 새로운 댓글 목록을 가져옴
+      const updatedResponse = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/questions/${questionId}?page=${page}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('Authorization'),
+          },
+        },
+      );
+
+      // 업데이트된 댓글 목록과 answerCount를 상태로 업데이트
+      dispatch(setAnswerList(updatedResponse.data.answers));
+      setPageInfo(updatedResponse.data.pageInfo);
+    }
   };
 
   useEffect(() => {
@@ -150,7 +187,7 @@ const AnswerBoxTop = ({ onEditClick, answer, question }: AnswerBoxTopProps) => {
       {isAuthor && (
         <S.RightBox>
           <S.EditBtn onClick={onEditClick}>수정</S.EditBtn>
-          <S.DeleteBtn onClick={handleDeleteAnswer}>삭제</S.DeleteBtn>
+          <S.DeleteBtn onClick={onDeleteAnswer}>삭제</S.DeleteBtn>
         </S.RightBox>
       )}
     </S.BoxTop>
