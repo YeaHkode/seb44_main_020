@@ -60,14 +60,14 @@ const QuestionDetailPage = () => {
         },
       });
       setQuestionAndAnswer(response.data);
-      console.log(response.data.answerCount);
-      console.log(response.data.answers);
+      console.log('answers', answers);
+      console.log('response.data.answer', response.data.answer);
       setPageInfo(response.data.pageInfo);
       dispatch(setAnswerList(response.data.answers));
     };
 
     getQuestionDetailData();
-  }, [questionId, page]);
+  }, [questionId, page, answers]);
 
   const onSubmit = async ({
     selectedMovie,
