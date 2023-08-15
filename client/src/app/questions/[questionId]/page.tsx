@@ -66,7 +66,7 @@ const QuestionDetailPage = () => {
     };
 
     getQuestionDetailData();
-  }, [questionAndAnswer, questionId, page]);
+  }, [questionId, page]);
 
   const onSubmit = async ({
     selectedMovie,
@@ -141,6 +141,13 @@ interface AnswerCountBoxProps {
 }
 
 const AnswerCountBox = ({ question }: AnswerCountBoxProps) => {
+  const [commentCount, setCommentCount] = useState(question?.answerCount || 0);
+
+  useEffect(() => {
+    console.log('AnswerCountBox useEffect triggered');
+    setCommentCount(question?.answerCount || 0);
+  }, [question]);
+
   return (
     <S.AnswerCountContainer>
       <S.AnswerCountBox>
