@@ -140,15 +140,8 @@ const QuestionDetailPage = () => {
 interface AnswerCountBoxProps {
   question: QuestionDetailResponse | null;
 }
-
+// 댓글 수
 const AnswerCountBox = ({ question }: AnswerCountBoxProps) => {
-  // const [commentCount, setCommentCount] = useState(question?.answerCount || 0);
-
-  // useEffect(() => {
-  //   console.log('AnswerCountBox useEffect triggered');
-  //   setCommentCount(question?.answerCount || 0);
-  // }, [question]);
-
   return (
     <S.AnswerCountContainer>
       <S.AnswerCountBox>
