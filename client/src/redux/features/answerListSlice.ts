@@ -7,6 +7,7 @@ export interface AnswerType {
   nickname: string;
   content: string;
   createdAt: string;
+  answercount: number;
   movie: {
     title: string;
     poster: string;

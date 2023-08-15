@@ -141,16 +141,10 @@ interface AnswerCountBoxProps {
 }
 
 const AnswerCountBox = ({ question }: AnswerCountBoxProps) => {
-  const [answerCount, setAnswerCount] = useState(question?.answerCount || 0);
-
-  useEffect(() => {
-    setAnswerCount(question?.answerCount || 0);
-  }, [question?.answerCount]);
-
   return (
     <S.AnswerCountContainer>
       <S.AnswerCountBox>
-        댓글&nbsp;&nbsp;<span>{answerCount}개</span>
+        댓글&nbsp;&nbsp;<span>{question?.answerCount}</span>
       </S.AnswerCountBox>
     </S.AnswerCountContainer>
   );
