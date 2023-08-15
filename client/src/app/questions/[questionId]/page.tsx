@@ -145,7 +145,7 @@ const AnswerCountBox = ({ question }: AnswerCountBoxProps) => {
   return (
     <S.AnswerCountContainer>
       <S.AnswerCountBox>
-        댓글&nbsp;&nbsp;<span>{question?.answers.length}</span>
+        댓글&nbsp;&nbsp;<span>{question?.answerCount}</span>
       </S.AnswerCountBox>
     </S.AnswerCountContainer>
   );
